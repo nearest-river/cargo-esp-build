@@ -10,7 +10,7 @@ keywords = ["esp8266", "embedded", "esp"]
 categories = ["embedded"]
 
 [dependencies]
-clap = { version = "4.5.23", features = ["cargo", "debug", "derive", "env", "string"] }
+clap = { version = "4.5.23", features = ["derive"] }
 
 [profile.release]
 strip = true

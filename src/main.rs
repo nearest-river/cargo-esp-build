@@ -16,8 +16,6 @@ struct App {
   flash: bool,
   #[arg(long)]
   dry_run: bool,
-  #[arg(trailing_var_arg=true)]
-  cargoflags: Vec<String>
 }
 
 static TARGET: &str="xtensa-esp8266-none-elf";
@@ -27,7 +25,8 @@ static RUSTFLAGS: LazyLock<String>=LazyLock::new(|| match env::var("RUSTFLAGS") 
 });
 
 fn main()-> io::Result<()> {
-  let app=App::parse();
+  let args=env::args().collect::<Vec<_>>();
+  let app=App::parse_from(&args[1..]);
   let mut process=Command::new("rustup");
 
   process.env("RUSTFLAGS",&*RUSTFLAGS);
@@ -44,7 +43,7 @@ fn main()-> io::Result<()> {
   }
 
   process.args(["--target",TARGET]);
-  if let Some(args)=extract_trailing_args(&app.cargoflags) {
+  if let Some(args)=extract_trailing_args(&args) {
     process.args(args);
   }
 
@@ -63,7 +62,7 @@ fn extract_trailing_args<S: AsRef<str>>(args: &[S])-> Option<&[S]> {
   .enumerate()
   .find(|(_,arg)| arg.as_ref()=="--")?;
 
-  Some(&args[idx..])
+  Some(&args[idx+1..])
 }
 
 

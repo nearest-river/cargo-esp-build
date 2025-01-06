@@ -47,6 +47,11 @@ fn main()-> io::Result<()> {
     process.args(args);
   }
 
+  if app.dry_run {
+    println!("{:#?}",process);
+    return Ok(());
+  }
+
   let status=process.status()?;
   if !status.success() {
     let code=status.code().unwrap_or(1);

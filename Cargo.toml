@@ -1,0 +1,24 @@
+[package]
+name = "cargo-esp-build"
+version = "0.1.0"
+edition = "2021"
+authors = ["Nearest River river177169@proton.me"]
+license = "GPL-2.0-only"
+description = "A cargo-build extension for esp8266 chips"
+repository = "https://github.com/nearest-river/cargo-esp-build"
+keywords = ["esp8266", "embedded", "esp"]
+categories = ["embedded"]
+
+[dependencies]
+clap = { version = "4.5.23", features = ["cargo", "debug", "derive", "env", "string"] }
+
+[profile.release]
+strip = true
+opt-level = "s"
+lto = true
+codegen-units = 1
+debug = false
+debug-assertions = false
+
+[profile.dev]
+debug = true
